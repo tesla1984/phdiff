@@ -49,8 +49,9 @@ class PhabricatorDifferentialPostJob(
       val diff = differentialClient.fetchDiff(diffID)
       if (context?.analysisMode()?.isIssues ?: false) {
         StreamSupport.stream(context?.issues()?.spliterator(), false)
-          .filter { it.isNew }
+//          .filter { it.isNew }
           .filter { it.inputComponent()?.isFile ?: false }
+          .filter { diff.filePaths.contains(it.inputComponent().toString()) }
           .sorted(issueComparator)
           .forEach { i ->
             run {
@@ -58,7 +59,7 @@ class PhabricatorDifferentialPostJob(
               val ic = inlineReportBuilder.issue(i).build()
               val filePath = i.inputComponent().toString()
               try {
-                differentialClient.postInlineComment(diffID, filePath, i.line()!!, ic)
+                differentialClient.postInlineComment(diffID, filePath, i.line() ?: 0, ic)
                 log.debug("Comment $ic has been published")
               } catch (e: ConduitException) {
                 if (e.message.equals("Requested file doesn't exist in this revision.")) {

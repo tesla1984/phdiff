@@ -58,6 +58,16 @@ class DifferentialClient(val conduitClient: ConduitClient) {
     diff.revisionId = diffJsonObj.getString("revisionID")
     diff.dateCreated = Date(diffJsonObj.getLong("dateCreated"))
     diff.dateModified = Date(diffJsonObj.getLong("dateModified"))
+    try{
+      val changeArr = diffJsonObj.getJSONArray("changes")
+      for (i in 0 until changeArr.length()){
+        val changeObj = changeArr.get(i) as JSONObject
+        val currentPath = changeObj.getString("currentPath")
+        diff.filePaths.add(currentPath)
+      }
+    }catch (e:Exception){
+      System.out.println("get currentPath failed:" + e.message)
+    }
     return diff
   }
 

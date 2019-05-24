@@ -14,6 +14,7 @@ class Diff {
   var branch: String = ""
   var unitStatus: Int = 0
   var lintStatus: Int = 0
+  var filePaths = arrayListOf<String>()
 
   fun getFormatedRevisionID(): String {
     return "D$revisionId"

@@ -109,7 +109,7 @@ public class RemarkupUtils {
   public String issue(PostJobIssue issue) {
     return String.format("%s %s %s %s",
       icon(issue.severity()),
-      source(issue.componentKey(), issue.line()),
+      source(issue.componentKey(), issue.line() == null ? 0 : issue.line()),
       message(issue.message()),
       rule(issue.ruleKey().rule())
     );
