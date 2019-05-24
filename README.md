@@ -1,3 +1,18 @@
+1. 修复issue.line()空指针bug
+> Caused by: java.lang.NullPointerException
+	at io.nthienan.phdiff.report.RemarkupUtils.issue(RemarkupUtils.java:112)
+	at io.nthienan.phdiff.report.RemarkupGlobalReportBuilder.add(RemarkupGlobalReportBuilder.java:38)
+	at io.nthienan.phdiff.PhabricatorDifferentialPostJob$execute$3.accept(PhabricatorDifferentialPostJob.kt:58)
+	at io.nthienan.phdiff.PhabricatorDifferentialPostJob$execute$3.accept(PhabricatorDifferentialPostJob.kt:20)
+	at io.nthienan.phdiff.PhabricatorDifferentialPostJob.execute(PhabricatorDifferentialPostJob.kt:56)
+  
+2. 原来插件是添加新issue到comment中，但是有如下问题
+  * 显示的issue汇总会包含非当前提交的文件
+  * 当前提交的文件之前产生的issue不会显示出来
+  
+ 现在修改为当前diff中文件的issue，汇总只是针对这些issue，而且之前产生的issue也会在其中
+ 
+----
 # Phabricator Differential Sonar Plugin 
 [![Build Status](https://api.travis-ci.org/nthienan/phdiff.svg?branch=master)](https://travis-ci.org/nthienan/phdiff)
 
